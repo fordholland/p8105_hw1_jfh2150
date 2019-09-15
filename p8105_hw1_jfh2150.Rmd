@@ -103,6 +103,74 @@ nm_reconverted_vector * nm_random_sample
 ```
 
 
+## Problem 2
+
+
+```{r}
+
+df_problem_2 = tibble(
+  x = rnorm(500),
+  y = rnorm(500),
+  lg_sum_x_y_gr_1 = as.logical(x + y > 1),
+  nm_sum_x_y_gr_1 = as.numeric(lg_sum_x_y_gr_1),
+  ft_sum_x_y_gr_1 = factor(lg_sum_x_y_gr_1, levels = c(FALSE, TRUE))
+)
+
+```
+
+
+The data frame created above contains samples of length 500 from the standard normal distribution (`x` and `y`), and three features indicating whether `x + y > 1`. The first indicator is a logical vector, and the second two were created by coercing that vector to numeric and factor types. 
+
+The data frame is thus comprised of `r nrow(df_problem_2)` rows and `r ncol(df_problem_2)` columns. Column `x` has a mean of `r mean(df_problem_2 %>% pull(x))`, a median of `r median(df_problem_2 %>% pull(x))`, and standard deviation of `r sd(df_problem_2 %>% pull(x))`. The proportion of cases where `x + y > 1` is `r sum(df_problem_2 %>% pull(nm_sum_x_y_gr_1)) / nrow(df_problem_2)`.
+
+
+
+The scatterplots displayed below show `x` plotted against `y`. In each plot, the points are colored by one of the three indicators. 
+
+The first plot is colored by the logical indicator. As such, the color scale reflects the two discrete values (`TRUE` and `FALSE`) that the indicator comprises.
+
+
+```{r}
+
+# scatterplot colored by logical vector
+ggplot(df_problem_2, aes(x = x, y = y, color = lg_sum_x_y_gr_1)) +
+  geom_point()
+
+# save plot above
+ggsave(filename = "scatterplot_by_lg_indicator.pdf")
+
+```
+
+
+The second plot is colored by the numeric indicator derived from the logical indicator. Although the indicator only contains discrete values of `1` and `0`, ggplot recognizes numeric features as continuous, so a continuous color scale is displayed in the legend.
+
+
+```{r}
+
+# scatterplot colored by numeric vector
+ggplot(df_problem_2, aes(x = x, y = y, color = nm_sum_x_y_gr_1)) +
+  geom_point()
+
+```
+
+
+The final plot is colored by the factor indicator derived from the logical indicator. As with the logical indicator, the color scale contains only the two discrete factor values of `TRUE` and `FALSE`.
+
+
+```{r}
+
+# scatterplot colored by factor vector
+ggplot(df_problem_2, aes(x = x, y = y, color = ft_sum_x_y_gr_1)) +
+  geom_point()
+
+```
+
+
+
+
+
+
+
 
 
 
