@@ -1,30 +1,108 @@
 ---
-title: "Homework 1"
+title: "p8105_hw1_jfh2150"
 author: "Ford Holland"
-date: "9/15/2019"
 output: github_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(purrr)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Problem 1
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+The following code creates a data frame comprised of:
 
-```{r cars}
-summary(cars)
+* a random sample of size 8 from a standard Normal distribution
+* a logical vector indicating whether elements of the sample are greater than 0
+* a character vector of length 8
+* a factor vector of length 8, with 3 different factor levels ("low", "medium", and "high")
+
+Taking the mean of each column via the `map` function from the `purrr` package demonstrates that the `mean` function in R coerces logical, but not character or factor, vectors to numeric. 
+
+The mean is successfully calculated for the numeric variable and the logical variable, which is coerced to values of `1` and `0` for `TRUE` and `FALSE`, respectively. `NA` values are returned for the character and factor variables. 
+
+
+```{r}
+
+# create data frame
+df_problem_1 = tibble(
+  nm_random_sample = rnorm(8),
+  lg_sample_gr_0 = as.logical(nm_random_sample > 0),
+  ch_vector = as.character(1:8),
+  ft_vector = factor(
+    rep(c("high", "medium", "low"), length.out = 8),
+    levels = c("low", "medium", "high")
+  )
+)
+
+# take mean of each column
+df_problem_1 %>% 
+  map(mean)
+
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+Applying the `as.numeric` function to the non-numeric variables in the data frame successfully converts all 3 vectors to numeric in my example.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+The logical vector is converted to values of `1` and `0` as with the `mean` function. In this example, the character vector was also converted to numeric because of my choice of characters (`"1", "2", ... ,"8"`). Had this vector contained values like `"blue"` or `"one"` the coercion would have failed, but characters that contain numbers can be converted to numeric. Finally, the factor variable was also successfully converted to numeric because of its underlying level structure. R treats factor levels as numeric, so it is possible to convert the character values to numbers according to their levels.
+
+These results confirm a few findings from the mean calculations above. Firstly, that logical values can be and are coerced to numeric by the `mean` and `as.numeric` functions. And secondly, that although factors and (in some cases) characters can be coerced to numeric, the `mean` function does not perform these conversions.
+
+
+```{r, results = "hide"}
+
+# map as.numeric function to the logical, character, and factor variables
+df_problem_1 %>% 
+  select(-c(nm_random_sample)) %>% 
+  map(as.numeric)
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+The code chunk below further demonstrates how logical and factor data types can be converted to numeric to apply arithmetic operations. Examples (b) and (c) show that multiplication in R will not implicitly coerce factors to numeric, but if they are explicitly cast, as in (c), it is possible to perform multiplication and other operations on factors.
+
+
+```{r}
+
+# (a)
+# convert the logical vector to numeric 
+nm_converted_vector = df_problem_1 %>% 
+  pull(lg_sample_gr_0) %>% 
+  as.numeric() 
+
+# pull the random sample
+nm_random_sample = df_problem_1 %>% 
+  pull(nm_random_sample)
+
+# multiply the random sample by the result
+nm_converted_vector * nm_random_sample
+
+
+# (b)
+# convert the logical vector to a factor
+ft_converted_vector = df_problem_1 %>% 
+  pull(lg_sample_gr_0) %>% 
+  factor(levels = c(FALSE, TRUE)) 
+
+# multiply the random sample by the result
+ft_converted_vector * nm_random_sample
+
+
+# (C)
+# convert the logical vector to a factor and then convert the result to numeric
+nm_reconverted_vector = ft_converted_vector %>% 
+  as.numeric()
+
+# multiply the random sample by the result
+nm_reconverted_vector * nm_random_sample
+
+```
+
+
+
+
+
