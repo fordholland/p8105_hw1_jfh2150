@@ -8,7 +8,6 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
-library(purrr)
 ```
 
 
@@ -41,7 +40,7 @@ df_problem_1 = tibble(
 
 # take mean of each column
 df_problem_1 %>% 
-  map(mean)
+  map_df(mean)
 
 ```
 
@@ -58,7 +57,7 @@ These results confirm a few findings from the mean calculations above. Firstly, 
 # map as.numeric function to the logical, character, and factor variables
 df_problem_1 %>% 
   select(-c(nm_random_sample)) %>% 
-  map(as.numeric)
+  map_df(as.numeric)
 
 ```
 
