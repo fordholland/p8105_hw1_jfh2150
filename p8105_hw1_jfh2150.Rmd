@@ -56,7 +56,7 @@ These results confirm a few findings from the mean calculations above. Firstly, 
 
 # map as.numeric function to the logical, character, and factor variables
 df_problem_1 %>% 
-  select(-c(nm_random_sample)) %>% 
+  select(-nm_random_sample) %>% 
   map_df(as.numeric)
 
 ```
