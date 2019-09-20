@@ -153,7 +153,7 @@ ggplot(df_problem_2, aes(x = x, y = y, color = nm_sum_x_y_gr_1)) +
 ```
 
 
-The final plot is colored by the factor indicator derived from the logical indicator. As with the logical indicator, the color scale contains only the two discrete factor values of `TRUE` and `FALSE`.
+The final plot is colored by the factor indicator derived from the logical indicator. As with the logical indicator, the color scale contains only the two discrete factor values of `TRUE` and `FALSE`, indicating whether or not the point falls *above* the line `y = -x + 1`.
 
 
 ```{r}
