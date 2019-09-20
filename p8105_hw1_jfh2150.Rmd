@@ -47,7 +47,7 @@ df_problem_1 %>%
 
 Applying the `as.numeric` function to the non-numeric variables in the data frame successfully converts all 3 vectors to numeric in my example.
 
-The logical vector is converted to values of `1` and `0` as with the `mean` function. In this example, the character vector was also converted to numeric because of my choice of characters (`"1", "2", ... ,"8"`). Had this vector contained values like `"blue"` or `"one"` the coercion would have failed, but characters that contain numbers can be converted to numeric. Finally, the factor variable was also successfully converted to numeric because of its underlying level structure. R treats factor levels as numeric, so it is possible to convert the character values to numbers according to their levels.
+The logical vector is converted to values of `1` and `0` as with the `mean` function. In this example, the character vector was also converted to numeric because of my choice of characters (`"1", "2", ... ,"8"`). Had this vector contained values like `"blue"` or `"one"` the coercion would have failed, but characters that contain numbers can be converted to numeric. Finally, the factor variable was also successfully converted to numeric because of its underlying structure. R stores factors as numeric values mapped to the character level values, so it is possible to convert the character values back to numbers.
 
 These results confirm a few findings from the mean calculations above. Firstly, that logical values can be and are coerced to numeric by the `mean` and `as.numeric` functions. And secondly, that although factors and (in some cases) characters can be coerced to numeric, the `mean` function does not perform these conversions.
 
